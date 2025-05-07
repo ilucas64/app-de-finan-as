@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meu Controle Financeiro</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>💰 Meu Controle Financeiro</h1>
+
+    <form id="form-transacao">
+      <input type="number" id="valor" placeholder="Digite um valor (R$)" step="0.01" required />
+      <select id="categoria" required>
+        <option value="">Categoria</option>
+        <option value="Salário">💼 Salário</option>
+        <option value="Aluguel">🏠 Aluguel</option>
+        <option value="Luz/Água">💡 Luz/Água</option>
+        <option value="Compras">🛒 Compras</option>
+        <option value="Lazer">🎉 Lazer</option>
+        <option value="Outro">📌 Outro</option>
+      </select>
+      <button type="submit">➕ Adicionar</button>
+    </form>
+
+    <div class="info">
+      <p>💵 Saldo: <strong>R$ <span id="saldo">0.00</span></strong></p>
+      <p>📉 Total Gasto: <strong>R$ <span id="gastos">0.00</span></strong></p>
+    </div>
+
+    <canvas id="grafico"></canvas>
+
+    <h2>📋 Histórico</h2>
+    <ul id="lista-transacoes"></ul>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
