@@ -3,45 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Calculadora Financeira</title>
+  <title>Meu Financeiro Inteligente 💸</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>Calculadora Financeira</h1>
+    <h1>💸 Meu Financeiro Inteligente</h1>
 
-    <label>Salário:</label>
-    <input type="number" id="salario" placeholder="Ex: 3000" />
+    <div class="card">
+      <form id="financeForm">
+        <h2>Renda Mensal</h2>
+        <input type="number" id="salario" placeholder="Salário mensal (R$)" required />
 
-    <label>Conta de Luz:</label>
-    <input type="number" id="luz" placeholder="Ex: 150" />
+        <h2>Despesas Fixas</h2>
+        <input type="number" id="luz" placeholder="Conta de luz (R$)" />
+        <input type="number" id="agua" placeholder="Conta de água (R$)" />
+        <input type="number" id="aluguel" placeholder="Aluguel (R$)" />
 
-    <label>Conta de Água:</label>
-    <input type="number" id="agua" placeholder="Ex: 80" />
+        <h2>Simular Compra</h2>
+        <input type="number" id="compra" placeholder="Valor da compra (R$)" />
+        <select id="pagamento">
+          <option value="debito">Débito</option>
+          <option value="credito">Crédito</option>
+          <option value="parcelado">Parcelado</option>
+        </select>
+        <div id="parcelasDiv" style="display: none;">
+          <input type="number" id="parcelas" placeholder="Número de parcelas" min="2" value="2" />
+        </div>
 
-    <label>Aluguel:</label>
-    <input type="number" id="aluguel" placeholder="Ex: 1000" />
-
-    <hr />
-
-    <label>Valor da Compra:</label>
-    <input type="number" id="valorCompra" placeholder="Ex: 500" />
-
-    <label>Forma de Pagamento:</label>
-    <select id="formaPagamento">
-      <option value="debito">Débito</option>
-      <option value="credito">Crédito à vista</option>
-      <option value="parcelado">Parcelado</option>
-    </select>
-
-    <div id="parcelasDiv" style="display: none;">
-      <label>Quantidade de Parcelas:</label>
-      <input type="number" id="parcelas" min="1" placeholder="Ex: 5" />
+        <button type="submit">Calcular</button>
+      </form>
     </div>
 
-    <button onclick="calcular()">Verificar Compra</button>
+    <div id="resultado" class="card hidden"></div>
 
-    <div id="resultado"></div>
+    <div class="card ai-assistant">
+      <h2>🤖 Assistente Financeiro</h2>
+      <input type="text" id="pergunta" placeholder="Faça uma pergunta (ex: como economizar?)" />
+      <button onclick="responderIA()">Perguntar</button>
+      <div id="respostaIA" class="resposta"></div>
+    </div>
   </div>
 
   <script src="script.js"></script>
