@@ -1,64 +1,89 @@
-document.getElementById('pagamento').addEventListener('change', function () {
-  const div = document.getElementById('parcelasDiv');
-  div.style.display = this.value === 'parcelado' ? 'block' : 'none';
-});
+let transacoes = [];
+let chart;
 
-document.getElementById('financeForm').addEventListener('submit', function (e) {
+document.getElementById("form-transacao").addEventListener("submit", function(e) {
   e.preventDefault();
 
-  const salario = parseFloat(document.getElementById('salario').value);
-  const luz = parseFloat(document.getElementById('luz').value) || 0;
-  const agua = parseFloat(document.getElementById('agua').value) || 0;
-  const aluguel = parseFloat(document.getElementById('aluguel').value) || 0;
-  const compra = parseFloat(document.getElementById('compra').value) || 0;
-  const pagamento = document.getElementById('pagamento').value;
-  const parcelas = parseInt(document.getElementById('parcelas').value) || 1;
+  const valor = parseFloat(document.getElementById("valor").value);
+  const categoria = document.getElementById("categoria").value;
 
-  const despesasFixas = luz + agua + aluguel;
-  const saldo = salario - despesasFixas;
+  if (!valor || !categoria) return;
 
-  let mensagem = `<h3>Resumo Financeiro</h3>`;
-  mensagem += `<p>Saldo disponível após despesas fixas: <strong>R$ ${saldo.toFixed(2)}</strong></p>`;
+  transacoes.push({ valor, categoria });
+  document.getElementById("valor").value = '';
+  document.getElementById("categoria").value = '';
 
-  if (compra > 0) {
-    if (pagamento === 'parcelado') {
-      const valorParcela = compra / parcelas;
-      mensagem += `<p>Parcelas de R$${valorParcela.toFixed(2)} em ${parcelas}x.</p>`;
-      if (valorParcela > saldo * 0.3) {
-        mensagem += `<p>⚠️ Cuidado! A parcela compromete mais de 30% do seu saldo disponível.</p>`;
-      } else {
-        mensagem += `<p>✅ Parcelamento possível sem grandes riscos.</p>`;
-      }
-    } else {
-      if (compra > saldo) {
-        mensagem += `<p>🚫 Você não deve comprar isso agora. Vai se apertar!</p>`;
-      } else {
-        mensagem += `<p>✅ Você pode comprar agora sem risco.</p>`;
-      }
-    }
-  }
-
-  const resultado = document.getElementById('resultado');
-  resultado.innerHTML = mensagem;
-  resultado.classList.remove('hidden');
+  atualizarInterface();
 });
 
-// Mini IA local (respostas automáticas com palavras-chave)
-function responderIA() {
-  const pergunta = document.getElementById('pergunta').value.toLowerCase();
-  const respostaDiv = document.getElementById('respostaIA');
+function atualizarInterface() {
+  const lista = document.getElementById("lista-transacoes");
+  lista.innerHTML = "";
 
-  let resposta = "🤔 Ainda estou aprendendo. Tente outra pergunta.";
+  let salarioTotal = 0;
+  let gastos = 0;
 
-  if (pergunta.includes("economizar")) {
-    resposta = "💡 Dica: Corte gastos supérfluos, use lista no mercado e evite parcelamentos.";
-  } else if (pergunta.includes("guardar") || pergunta.includes("poupar")) {
-    resposta = "📊 Comece guardando 10% do seu salário mensal em uma poupança.";
-  } else if (pergunta.includes("vale a pena") && pergunta.includes("parcelar")) {
-    resposta = "📌 Vale a pena parcelar apenas se não houver juros e a parcela couber confortavelmente no seu orçamento.";
-  } else if (pergunta.includes("como ficar rico")) {
-    resposta = "💰 Trabalhe com constância, evite dívidas, invista com sabedoria e gaste menos do que ganha.";
+  for (const t of transacoes) {
+    if (t.categoria === "Salário") {
+      salarioTotal += t.valor;
+    } else {
+      gastos += Math.abs(t.valor);
+    }
+
+    const li = document.createElement("li");
+    li.textContent = `${t.categoria}: R$ ${t.valor.toFixed(2)}`;
+    lista.appendChild(li);
   }
 
-  respostaDiv.textContent = resposta;
+  const saldo = salarioTotal - gastos;
+  document.getElementById("saldo").textContent = saldo.toFixed(2);
+  document.getElementById("gastos").textContent = gastos.toFixed(2);
+
+  atualizarGrafico(salarioTotal, gastos);
+}
+
+function agruparDespesasPorCategoria() {
+  const categorias = {};
+  for (const t of transacoes) {
+    if (t.categoria !== "Salário") {
+      categorias[t.categoria] = (categorias[t.categoria] || 0) + Math.abs(t.valor);
+    }
+  }
+  return categorias;
+}
+
+function atualizarGrafico(salarioTotal, gastos) {
+  const ctx = document.getElementById("grafico").getContext("2d");
+  const despesas = agruparDespesasPorCategoria();
+
+  const labels = [...Object.keys(despesas), "Saldo Restante"];
+  const valores = [...Object.values(despesas), Math.max(salarioTotal - gastos, 0)];
+
+  if (chart) chart.destroy();
+
+  chart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels,
+      datasets: [{
+        label: "Distribuição do Salário",
+        data: valores,
+        backgroundColor: [
+          '#e74c3c', // Aluguel
+          '#f1c40f', // Luz/Água
+          '#3498db', // Compras
+          '#9b59b6', // Lazer
+          '#95a5a6', // Outro
+          '#2ecc71'  // Saldo restante
+        ],
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          position: 'bottom',
+        }
+      }
+    }
+  });
 }

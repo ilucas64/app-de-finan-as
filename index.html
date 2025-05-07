@@ -1,48 +1,39 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Meu Financeiro Inteligente 💸</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle Financeiro Divino</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="container">
-    <h1>💸 Meu Financeiro Inteligente</h1>
+    <h1>💸 Controle Financeiro Divino</h1>
 
-    <div class="card">
-      <form id="financeForm">
-        <h2>Renda Mensal</h2>
-        <input type="number" id="salario" placeholder="Salário mensal (R$)" required />
+    <form id="form-transacao">
+      <input type="number" id="valor" placeholder="Valor (ex: 2000 ou -500)" required>
+      <select id="categoria" required>
+        <option value="" disabled selected>Categoria</option>
+        <option value="Salário">Salário</option>
+        <option value="Aluguel">Aluguel</option>
+        <option value="Luz/Água">Luz/Água</option>
+        <option value="Compras">Compras</option>
+        <option value="Lazer">Lazer</option>
+        <option value="Outro">Outro</option>
+      </select>
+      <button type="submit">Adicionar</button>
+    </form>
 
-        <h2>Despesas Fixas</h2>
-        <input type="number" id="luz" placeholder="Conta de luz (R$)" />
-        <input type="number" id="agua" placeholder="Conta de água (R$)" />
-        <input type="number" id="aluguel" placeholder="Aluguel (R$)" />
-
-        <h2>Simular Compra</h2>
-        <input type="number" id="compra" placeholder="Valor da compra (R$)" />
-        <select id="pagamento">
-          <option value="debito">Débito</option>
-          <option value="credito">Crédito</option>
-          <option value="parcelado">Parcelado</option>
-        </select>
-        <div id="parcelasDiv" style="display: none;">
-          <input type="number" id="parcelas" placeholder="Número de parcelas" min="2" value="2" />
-        </div>
-
-        <button type="submit">Calcular</button>
-      </form>
+    <div class="resumo">
+      <p><strong>Saldo Atual:</strong> R$ <span id="saldo">0.00</span></p>
+      <p><strong>Gastos Totais:</strong> R$ <span id="gastos">0.00</span></p>
     </div>
 
-    <div id="resultado" class="card hidden"></div>
+    <canvas id="grafico" width="400" height="400"></canvas>
 
-    <div class="card ai-assistant">
-      <h2>🤖 Assistente Financeiro</h2>
-      <input type="text" id="pergunta" placeholder="Faça uma pergunta (ex: como economizar?)" />
-      <button onclick="responderIA()">Perguntar</button>
-      <div id="respostaIA" class="resposta"></div>
-    </div>
+    <h2>Transações</h2>
+    <ul id="lista-transacoes"></ul>
   </div>
 
   <script src="script.js"></script>
