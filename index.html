@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculadora Financeira</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Calculadora Financeira</h1>
+
+    <label>Salário:</label>
+    <input type="number" id="salario" placeholder="Ex: 3000" />
+
+    <label>Conta de Luz:</label>
+    <input type="number" id="luz" placeholder="Ex: 150" />
+
+    <label>Conta de Água:</label>
+    <input type="number" id="agua" placeholder="Ex: 80" />
+
+    <label>Aluguel:</label>
+    <input type="number" id="aluguel" placeholder="Ex: 1000" />
+
+    <hr />
+
+    <label>Valor da Compra:</label>
+    <input type="number" id="valorCompra" placeholder="Ex: 500" />
+
+    <label>Forma de Pagamento:</label>
+    <select id="formaPagamento">
+      <option value="debito">Débito</option>
+      <option value="credito">Crédito à vista</option>
+      <option value="parcelado">Parcelado</option>
+    </select>
+
+    <div id="parcelasDiv" style="display: none;">
+      <label>Quantidade de Parcelas:</label>
+      <input type="number" id="parcelas" min="1" placeholder="Ex: 5" />
+    </div>
+
+    <button onclick="calcular()">Verificar Compra</button>
+
+    <div id="resultado"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
